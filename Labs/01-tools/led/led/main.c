@@ -40,6 +40,22 @@
  * Purpose:  Toggle one LED and use delay library.
  * Returns:  none
  **********************************************************************/
+
+#define LED_HIGH PORTB |= (1<<LED_GREEN)
+#define LED_LOW PORTB &= ~(1<<LED_GREEN)
+
+void blinkShort(){
+	LED_HIGH;
+	_delay_ms(SHORT_DELAY);
+	LED_LOW;
+}
+
+void blinkLong(){
+	LED_HIGH;
+	_delay_ms(LONG_DELAY);
+	LED_LOW;
+}
+
 int main(void)
 {
     // Set pin as output in Data Direction Register
@@ -53,14 +69,23 @@ int main(void)
     // Infinite loop
     while (1)
     {
-        _delay_ms(SHORT_DELAY);		// Pause several milliseconds
-        PORTB |= (1<<LED_GREEN);	// Set LED to on
-		_delay_ms(SHORT_DELAY);		// Pause several milliseconds
-		PORTB &= ~(1<<LED_GREEN);	// Set LED to off
-		_delay_ms(SHORT_DELAY);		// Pause several milliseconds
-		PORTB |= (1<<LED_GREEN);	// Set LED to on
-		_delay_ms(LONG_DELAY);		// Pause for more milliseconds (LED is shining now)
-		PORTB &= ~(1<<LED_GREEN);	// Set LED to off
+        blinkLong();			// start of letter D
+        _delay_ms(SHORT_DELAY);	
+        blinkShort();
+        _delay_ms(SHORT_DELAY);
+		blinkShort();
+		_delay_ms(LONG_DELAY);	// space between letters
+		blinkShort();			// letter E
+		_delay_ms(LONG_DELAY);	// space between letters
+		blinkShort();			// start of number 2
+		_delay_ms(SHORT_DELAY);
+		blinkShort();
+		_delay_ms(SHORT_DELAY);
+		for (uint8_t i = 0; i != 3; i++){
+			blinkLong();
+			_delay_ms(SHORT_DELAY);
+		}
+		_delay_ms(LONG_DELAY);	// space between words
     }
 
     // Will never reach this
