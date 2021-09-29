@@ -22,9 +22,9 @@ Link to your `Digital-electronics-2` GitHub repository:
 | **DDRB** | **PORTB** | **Direction** | **Internal pull-up resistor** | **Description** |
 | :-: | :-: | :-: | :-: | :-- |
 | 0 | 0 | input | no | Tri-state, high-impedance |
-| 0 | 1 | input | yes | |
-| 1 | 0 | output | | |
-| 1 | 1 | output | | |
+| 0 | 1 | input | yes | Port will source current if externally pulled low |
+| 1 | 0 | output | no | Output low (sink) |
+| 1 | 1 | output | no | Output high (source) |
 
 2. Part of the C code listing with syntax highlighting, which blinks alternately with a pair of LEDs; let one LED is connected to port B and the other to port C:
 
