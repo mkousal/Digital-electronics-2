@@ -39,17 +39,17 @@ int main(void)
 
     // Configure the second LED at port C
     DDRC |= (1<<LED_SECOND);
-	PORTC &= ~(1<<LED_SECOND);
+    PORTC &= ~(1<<LED_SECOND);
 
     // Infinite loop
     while (1)
     {
         _delay_ms(BLINK_DELAY);
-		PORTC ^= (1<<LED_SECOND);
-		PORTB ^= (1<<LED_GREEN);
-		_delay_ms(BLINK_DELAY);
-		PORTC ^= (1<<LED_SECOND);
-		PORTB ^= (1<<LED_GREEN);
+        PORTC ^= (1<<LED_SECOND);
+        PORTB ^= (1<<LED_GREEN);
+        _delay_ms(BLINK_DELAY);
+        PORTC ^= (1<<LED_SECOND);
+        PORTB ^= (1<<LED_GREEN);
     }
 
     // Will never reach this
@@ -64,16 +64,16 @@ int main(void)
 
 ```c
     // Configure Push button at port D and enable internal pull-up resistor
-	DDRD &= ~(0<<BUTTON);
-	PORTD |= (1<<BUTTON);
+    DDRD &= ~(0<<BUTTON);
+    PORTD |= (1<<BUTTON);
 
     // Infinite loop
     while (1)
     {
-		if (bit_is_clear(PIND, BUTTON)){
-			PORTC ^= (1<<LED_SECOND);
-			PORTB ^= (1<<LED_GREEN);
-		}
+        if (bit_is_clear(PIND, BUTTON)){
+            PORTC ^= (1<<LED_SECOND);
+            PORTB ^= (1<<LED_GREEN);
+        }
     }
 ```
 
@@ -82,4 +82,4 @@ int main(void)
 
 1. Scheme of Knight Rider application, i.e. connection of AVR device, five LEDs, resistors, one push button, and supply voltage. The image can be drawn on a computer or by hand. Always name all components and their values!
 
-   ![your figure]()
+   ![your figure](images/schematic.svg)
