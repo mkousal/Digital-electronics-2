@@ -21,6 +21,9 @@
 /* Includes ----------------------------------------------------------*/
 #include <util/delay.h>     // Functions for busy-wait delay loops
 #include <avr/io.h>         // AVR device-specific IO definitions
+#include <avr/sfr_defs.h>
+
+#define _NOP() do { __asm__ __volatile__ ("nop"); } while (0)
 
 /* Functions ---------------------------------------------------------*/
 /**********************************************************************
@@ -38,7 +41,7 @@ int main(void)
 
     // Configure the second LED at port C
 	DDRC |= (1<<LED_SECOND);
-	PORTC &= ~(1<<LED_SECOND);
+	PORTC |= (1<<LED_SECOND);
 
     // Configure Push button at port D and enable internal pull-up resistor
 
@@ -48,12 +51,10 @@ int main(void)
     // Infinite loop
     while (1)
     {
-        _delay_ms(BLINK_DELAY);
-		PORTC ^= (1<<LED_SECOND);
-		PORTB ^= (1<<LED_GREEN);
-		_delay_ms(BLINK_DELAY);
-		PORTC ^= (1<<LED_SECOND);
-		PORTB ^= (1<<LED_GREEN);
+		if (bit_is_clear(PIND, BUTTON)){
+			PORTC ^= (1<<LED_SECOND);
+			PORTB ^= (1<<LED_GREEN);
+		}
     }
 
     // Will never reach this
