@@ -16,14 +16,14 @@ Link to your `Digital-electronics-2` GitHub repository:
 | `uint16_t` | 16 | 0, ..., 65535 | Unsigned 16-bit integer |
 | `int16_t`  | 16 | -32767, ..., +32767 | Signed 16-bit integer |
 | `float`    | 32 | -3.4e+38, ..., 3.4e+38 | Single-precision floating-point |
-| `void`     | Depends on architecture | - | No value or pointer |
+| `void`     | - | - | No value |
 
 
 ### GPIO library
 
 1. In your words, describe the difference between the declaration and the definition of the function in C.
-   * Function declaration
-   * Function definition
+   * Function declaration - declaration provides basic information about our new function like return type, parameters and name.
+   * Function definition - definition provides us all the details of function, mainly what it does. In function definition, there is all the logic of the function.
 
 2. Part of the C code listing with syntax highlighting, which toggles LEDs only if push button is pressed. Otherwise, the value of the LEDs does not change. Use function from your GPIO library. Let the push button is connected to port D:
 
@@ -46,4 +46,4 @@ Link to your `Digital-electronics-2` GitHub repository:
 
 1. Scheme of traffic light application with one red/yellow/green light for cars and one red/green light for pedestrians. Connect AVR device, LEDs, resistors, one push button (for pedestrians), and supply voltage. The image can be drawn on a computer or by hand. Always name all components and their values!
 
-   ![your figure]()
+   ![your figure](images/schematic.svg)
