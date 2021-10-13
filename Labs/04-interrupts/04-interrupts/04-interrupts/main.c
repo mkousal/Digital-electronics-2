@@ -33,7 +33,13 @@ int main(void)
 {
     // Configuration of LED(s) at port B
     GPIO_config_output(&DDRB, LED_D1);
-    GPIO_write_low(&PORTB, LED_D1);
+	GPIO_config_output(&DDRB, LED_D2);
+	GPIO_config_output(&DDRB, LED_D3);
+	GPIO_config_output(&DDRB, LED_D4);
+	GPIO_write_high(&PORTB, LED_D1);
+	GPIO_write_high(&PORTB, LED_D2);
+	GPIO_write_high(&PORTB, LED_D3);
+	GPIO_write_high(&PORTB, LED_D4);
 
     // Configuration of 16-bit Timer/Counter1 for LED blinking
     // Set the overflow prescaler to 262 ms and enable interrupt
@@ -59,9 +65,22 @@ int main(void)
  * Function: Timer/Counter1 overflow interrupt
  * Purpose:  Toggle D1 LED on Multi-function shield.
  **********************************************************************/
-ISR(TIMER0_OVF_vect)
+ISR(TIMER1_OVF_vect)
 {
+	static uint8_t i = 2;
+	static int8_t dir = 1;
+	
+	GPIO_write_low(&PORTB, i);
+	
+	if ((i != 2) | (i != 5))
+		GPIO_write_high(&PORTB, i - dir );
+		
+	if (i == 5)
+		dir = -1;
+	if (i == 2)
+		dir = 1;
+		
+	i += dir;
 
-    GPIO_toggle(&PORTB, LED_D1);
 
 }
