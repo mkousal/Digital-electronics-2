@@ -19,8 +19,8 @@ Link to your `Digital-electronics-2` GitHub repository:
 ### Timer library
 
 1. In your words, describe the difference between common C function and interrupt service routine.
-   * Function
-   * Interrupt service routine
+   * **Function** - function is some kind of commands sequence which can be run with different parameters anywhere from our program.
+   * **Interrupt service routine** - ISR is sequence of commands which are executed after activating defined interrupt event. We can't run this when we want (call it from program) because it is called at the hardware layer. It's good practice to get ISR as short as it could be, because it stops our executed main loop.
 
 2. Part of the header file listing with syntax highlighting, which defines settings for Timer/Counter0:
 
@@ -49,11 +49,11 @@ Link to your `Digital-electronics-2` GitHub repository:
 
 3. Flowchart figure for function `main()` and interrupt service routine `ISR(TIMER1_OVF_vect)` of application that ensures the flashing of one LED in the timer interruption. When the button is pressed, the blinking is faster, when the button is released, it is slower. Use only a timer overflow and not a delay library.
 
-   ![your figure]()
+   ![your figure](images/flowchart.svg)
 
 
 ### Knight Rider
 
 1. Scheme of Knight Rider application with four LEDs and a push button, connected according to Multi-function shield. Connect AVR device, LEDs, resistors, push button, and supply voltage. The image can be drawn on a computer or by hand. Always name all components and their values!
 
-   ![your figure]()
+   ![your figure](images/schematic.svg)
