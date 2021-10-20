@@ -87,7 +87,7 @@ ISR(TIMER0_OVF_vect)
 {
 	static uint8_t pos = 0;
 	static int8_t dir = 1;
-	if (pos != 2)
+	if (pos != 2)	// Enables DP on the second position
 		SEG_update_shift_regs(cnt[pos], pos, 0);
 	else
 		SEG_update_shift_regs(cnt[pos], pos, 1);

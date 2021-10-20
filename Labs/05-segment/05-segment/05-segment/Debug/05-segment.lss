@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000000b8  00000000  00000000  00000434  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000f18  00000000  00000000  000004ec  2**0
+  6 .debug_info   00000ed5  00000000  00000000  000004ec  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000008ca  00000000  00000000  00001404  2**0
+  7 .debug_abbrev 000008c1  00000000  00000000  000013c1  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000630  00000000  00000000  00001cce  2**0
+  8 .debug_line   00000658  00000000  00000000  00001c82  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000198  00000000  00000000  00002300  2**2
+  9 .debug_frame  00000198  00000000  00000000  000022dc  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000004dd  00000000  00000000  00002498  2**0
+ 10 .debug_str    000004e7  00000000  00000000  00002474  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000004a6  00000000  00000000  00002975  2**0
+ 11 .debug_loc    000004b2  00000000  00000000  0000295b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000088  00000000  00000000  00002e1b  2**0
+ 12 .debug_ranges 00000088  00000000  00000000  00002e0d  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -314,7 +314,7 @@ ISR(TIMER0_OVF_vect)
  1be:	ff 93       	push	r31
 	static uint8_t pos = 0;
 	static int8_t dir = 1;
-	if (pos != 2)
+	if (pos != 2)	// Enables DP on the second position
  1c0:	60 91 10 01 	lds	r22, 0x0110	; 0x800110 <__data_end>
  1c4:	62 30       	cpi	r22, 0x02	; 2
  1c6:	49 f0       	breq	.+18     	; 0x1da <__vector_16+0x3c>

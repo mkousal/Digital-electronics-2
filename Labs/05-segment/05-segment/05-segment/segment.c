@@ -131,18 +131,12 @@ void SEG_clear(void)
 {
 	GPIO_write_low(&PORTD, SEG_LATCH);
 	GPIO_write_low(&PORTD, SEG_CLK);
+	GPIO_write_high(&PORTB, SEG_DATA);
+	for (uint8_t i = 0; i != 8; i++)
+		SEG_clk_2us();		
 	GPIO_write_low(&PORTB, SEG_DATA);
 	for (uint8_t i = 0; i != 8; i++)
-	{
-		GPIO_write_high(&PORTB, SEG_DATA);
-		SEG_clk_2us();		
-	}
-	for (uint8_t i = 0; i != 8; i++)
-	{
-		GPIO_write_low(&PORTB, SEG_DATA);
 		SEG_clk_2us();
-	}
-	GPIO_write_high(&PORTD, SEG_LATCH);
 	_delay_us(1);
 }
 
