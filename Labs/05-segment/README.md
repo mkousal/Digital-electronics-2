@@ -14,14 +14,36 @@ Link to your `Digital-electronics-2` GitHub repository:
 2. Code listing with syntax highlighting of two interrupt service routines (`TIMER0_OVF_vect`, `TIMER0_OVF_vect`) from counter application with at least two digits, ie. values from 00 to 59:
 
 ```c
+volatile uint8_t cnt[] = {0,0,0,0};
+
+/* Interrupt service routines ----------------------------------------*/
 /**********************************************************************
  * Function: Timer/Counter1 overflow interrupt
- * Purpose:  Increment counter value from 00 to 59.
+ * Purpose:  Increment decimal counter value and display it on SSD.
  **********************************************************************/
 ISR(TIMER1_OVF_vect)
 {
-    // WRITE YOUR CODE HERE
-
+	cnt[0]++;	
+		
+	if (cnt[0] == 10)
+	{
+		cnt[0] = 0;
+		cnt[1]++;	
+	}
+	if (cnt[1] == 6)
+	{
+		cnt[1] = 0;
+		cnt[2]++;
+	}
+	if (cnt[2] == 10)
+	{
+		cnt[2] = 0;
+		cnt[3]++;
+	}
+	if (cnt[3] == 6)
+	{
+		cnt[3] = 0;
+	}
 }
 ```
 
@@ -32,10 +54,17 @@ ISR(TIMER1_OVF_vect)
  **********************************************************************/
 ISR(TIMER0_OVF_vect)
 {
-    static uint8_t pos = 0;
-
-    // WRITE YOUR CODE HERE
-
+	static uint8_t pos = 0;
+	static int8_t dir = 1;
+	if (pos != 2)
+		SEG_update_shift_regs(cnt[pos], pos, 0);
+	else
+		SEG_update_shift_regs(cnt[pos], pos, 1);
+	pos += dir;
+	if (pos == 3)
+		dir = -1;
+	if (pos == 0)
+		dir = 1;
 }
 ```
 

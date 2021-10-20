@@ -27,7 +27,7 @@ int main(void)
     // Configure SSD signals
     SEG_init();
     // Test of SSD: display number '3' at position 0
-    SEG_update_shift_regs(3, 0);
+    SEG_update_shift_regs(3, 0, 0);
 
     // Configure 16-bit Timer/Counter1 for Decimal counter
     // Set the overflow prescaler to 262 ms and enable interrupt
@@ -87,7 +87,10 @@ ISR(TIMER0_OVF_vect)
 {
 	static uint8_t pos = 0;
 	static int8_t dir = 1;
-	SEG_update_shift_regs(cnt[pos], pos);
+	if (pos != 2)
+		SEG_update_shift_regs(cnt[pos], pos, 0);
+	else
+		SEG_update_shift_regs(cnt[pos], pos, 1);
 	pos += dir;
 	if (pos == 3)
 		dir = -1;

@@ -38,6 +38,15 @@ uint8_t segment_position[] = {
 	0b10000000	// position 3
 };
 
+uint8_t segment_snake_value[] = {
+	0b01111111,	// a
+	0b10111111,	// b
+	0b11011111,	// c
+	0b11101111,	// d
+	0b11110111,	// e
+	0b11111011	// f
+};
+
 /* Function definitions ----------------------------------------------*/
 /**********************************************************************
  * Function: SEG_init()
@@ -54,16 +63,19 @@ void SEG_init(void)
 
 /**********************************************************************
  * Function: SEG_update_shift_regs()
- * Purpose:  Display segments at one position of the SSD.
- * Input:    segments - Segments to be displayed (abcdefgDP, active low)
- *           position - Position of the display where the segments are to 
+ * Purpose:  Display number at one position of the SSD.
+ * Input:    number - Number to be displayed (0,1,2,...., active low)
+ *           position - Position of the display where the numbers are to 
  *                      be displayed (p3 p2 p1 p0 xxxx, active high)
+ *			 DP - Decimal point displayed (0 - off), default OFF
  * Returns:  none
  **********************************************************************/
-void SEG_update_shift_regs(uint8_t segments, uint8_t position)
+void SEG_update_shift_regs(uint8_t number, uint8_t position, uint8_t dp)
 {
     uint8_t bit_number;
-	segments = segment_value[segments];
+	number = segment_value[number];
+	if (dp != 0)
+		number &= ~(0x01);
 	position = segment_position[position];
 
     // Pull LATCH, CLK, and DATA low
@@ -74,20 +86,20 @@ void SEG_update_shift_regs(uint8_t segments, uint8_t position)
     // Wait 1 us
 	_delay_us(1);
 
-    // Loop through the 1st byte (segments)
+    // Loop through the 1st byte (number)
     // a b c d e f g DP (active low values)
     for (bit_number = 0; bit_number < 8; bit_number++)
     {
-        // Test LSB of "segments" by & (faster) or % (slower) and... 
+        // Test LSB of "number" by & (faster) or % (slower) and... 
         // ...output DATA value
-		if ((segments & 0x01) == 1)
+		if ((number & 0x01) == 1)
 			GPIO_write_high(&PORTB, SEG_DATA);
 		else
 			GPIO_write_low(&PORTB, SEG_DATA);
 
 		SEG_clk_2us();
-        // Shift "segments"
-        segments = segments >> 1;
+        // Shift "number"
+        number = number >> 1;
     }
 
     // Loop through the 2nd byte (position)

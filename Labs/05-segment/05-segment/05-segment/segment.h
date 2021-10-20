@@ -61,11 +61,12 @@ void SEG_init(void);
  * @param  segments Segments to be displayed (abcdefgDP, active low)
  * @param  position Position of the display where the segments are to 
  *                  be displayed (p3 p2 p1 p0 xxxx, active high)
+ * @param  dp		If set to '1' -> DP turn on
  * @note   Two shift registers are connected in series, ie 16 bits are 
  *         transmitted.
  * @return none
  */
-void SEG_update_shift_regs(uint8_t segments, uint8_t position);
+void SEG_update_shift_regs(uint8_t segments, uint8_t position, uint8_t dp);
 
 
 /* SEG_clear */
