@@ -193,7 +193,7 @@ ISR(TIMER1_OVF_vect) // Runs every 262 ms, coordinates for c = (11, 1)
 	static uint8_t running_text[] = "   I like Digital Electronics\n";
 	static uint8_t cnt, cnt1 = 0;
 	cnt++;
-	if (cnt == 4)
+	if (cnt == 2)
 	{
 		cnt = 0;
 		cnt1++;
@@ -201,8 +201,10 @@ ISR(TIMER1_OVF_vect) // Runs every 262 ms, coordinates for c = (11, 1)
 		for (uint8_t i = cnt1; i != cnt1 + 5; i++)
 		{
 			lcd_putc(running_text[i]);
-			if (running_text[i] == 10)
+			if (running_text[i] == 10){
 				cnt1 = 0;
+				break;
+			}
 		}
 
 	}
