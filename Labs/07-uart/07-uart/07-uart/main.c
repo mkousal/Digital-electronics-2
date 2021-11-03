@@ -18,6 +18,9 @@
 #include <stdlib.h>         // C library. Needed for conversion function
 #include "uart.h"           // Peter Fleury's UART library
 
+static volatile uint8_t btn = 0;	// Initialize pressed button register
+
+
 /* Function definitions ----------------------------------------------*/
 /**********************************************************************
  * Function: Main function where the program execution begins
@@ -56,16 +59,49 @@ int main(void)
     // Enables interrupts by setting the global interrupt mask
     sei();
 
-	uart_puts("\033[4;32m");        // 4: underline style; 32: green foreground
-	uart_puts("This is all Green and Underlined.");
-	uart_puts("\033[0m");           // 0: reset all attributes
-	uart_puts("This is Normal text again.");
+	uart_puts_P("--- Interactive UART console ---"); uart_puts_P("\r\n");
+	uart_puts_P("1: ");
+	uart_puts_P("\033[94m"); uart_puts_P("read "); 
+	uart_puts_P("\033[0m"); uart_puts_P("current Timer/counter1 value"); uart_puts_P("\r\n");
+	uart_puts_P("2: ");
+	uart_puts_P("\033[31m"); uart_puts_P("reset ");
+	uart_puts_P("\033[0m"); uart_puts_P("Timer/counter1"); uart_puts_P("\r\n");
+	uart_puts_P("3: ");
+	uart_puts_P("\033[92m"); uart_puts_P("read ");
+	uart_puts_P("\033[0m"); uart_puts_P("ADC value from buttons"); uart_puts_P("\r\n");
+	uart_puts_P("\033[91m"); uart_puts_P("> "); uart_puts_P("\033[0m");
 
     // Infinite loop
     while (1)
     {
-        /* Empty loop. All subsequent operations are performed exclusively 
-         * inside interrupt service routines ISRs */
+		uint8_t c = uart_getc();
+		if (c != '\0')
+		{
+			uart_putc(c); uart_puts_P("\r\n");
+			switch (c) {
+				case '1': ;
+					char str[5];
+					cli();
+					int16_t temp = TCNT1;
+					sei();
+					itoa(temp, str, 10);
+					uart_puts(str); uart_puts_P("\r\n");
+					break;
+				case '2':
+					
+					break;
+				case '3':
+				
+					break;
+				default:
+					break;
+			}
+			uart_puts_P("\r\n"); uart_puts_P("\033[91m"); uart_puts_P("> "); uart_puts_P("\033[0m");
+
+		}
+
+
+		
     }
 
     // Will never reach this
@@ -93,8 +129,6 @@ ISR(ADC_vect)
 	uint16_t adc = ADC;		// Read ADC value from register
 	char str[4] = "    ";	// Initialize char array for int2char conversion
 	itoa(adc, str, 10);		// Convert int to decimal char array
-	uart_puts(str);			// Send it to UART
-	uart_putc(' ');
 	lcd_gotoxy(8, 0); lcd_puts("    ");		// LCD draw decimal value
 	lcd_gotoxy(8, 0); lcd_puts(str);
 	itoa(adc, str, 16);
@@ -102,38 +136,34 @@ ISR(ADC_vect)
 	lcd_gotoxy(13, 0); lcd_puts(str);
 	lcd_gotoxy(8, 1); lcd_puts("      ");	// LCD clean button name area
 	lcd_gotoxy(8, 1);
-	uart_puts(str);	// UART print hexadecimal value
-	uart_putc(' ');
-	if (adc < 50)	// Right
+	if (adc < 50)	// Right (btn = 1)
 	{
-		lcd_puts("Right");
-		uart_puts("Right");
+		btn = 1;
+		lcd_puts_P("Right");
 	}
-	else if (adc > 51 && adc < 170)	// Up
+	else if (adc > 51 && adc < 170)	// Up (btn = 2)
 	{
-		lcd_puts("Up");
-		uart_puts("Up");
+		btn = 2;
+		lcd_puts_P("Up");
 	}
-	else if (adc > 171 && adc < 320) // Down
+	else if (adc > 171 && adc < 320) // Down (btn = 3)
 	{
-		lcd_puts("Down");
-		uart_puts("Down");
+		btn = 3;
+		lcd_puts_P("Down");
 	}
-	else if (adc > 321 && adc < 520) // Left
+	else if (adc > 321 && adc < 520) // Left (btn = 4)
 	{
-		lcd_puts("Left");
-		uart_puts("Left");
+		btn = 4;
+		lcd_puts_P("Left");
 	}
-	else if (adc > 521 && adc < 800) // Select
+	else if (adc > 521 && adc < 800) // Select (btn = 5)
 	{
-		lcd_puts("Select");
-		uart_puts("Select");
+		btn = 5;
+		lcd_puts_P("Select");
 	}
-	else // none
+	else // none (btn = 0)
 	{
-		lcd_puts("none");
-		uart_puts("none");
+		btn = 0;
+		lcd_puts_P("none");
 	}
-	
-	uart_puts("\r\n");		// Send new line
 }
