@@ -1,0 +1,18 @@
+{signal: [
+  {name: 'Data', 	wave: 'x34......56.34......56.34......56.x', 
+   					data: 'start data parity stop start data parity stop start data parity stop',
+   					node: ''					
+  },
+  {name: 'TX', wave: 'hl..hl..h...lhlhl.h....l.hl.h.l.h..'},
+  {node: '....AB', phase: 0.15}
+],
+ edge: 
+  [
+	'A+B 208,3 us'
+],
+  
+ head: {
+   tick: -1,
+   every: 1
+ }
+}
