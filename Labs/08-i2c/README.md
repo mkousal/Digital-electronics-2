@@ -21,6 +21,7 @@ Link to this file in your GitHub repository:
 1. Code listing of Timer1 overflow interrupt service routine for scanning I2C devices and rendering a clear table on the UART.
 
 ```c
+/* Interrupt service routines ----------------------------------------*/
 /**********************************************************************
  * Function: Timer/Counter1 overflow interrupt
  * Purpose:  Update Finite State Machine and test I2C slave addresses 
@@ -39,6 +40,14 @@ ISR(TIMER1_OVF_vect)
     // Increment I2C slave address
     case STATE_IDLE:
         addr++;
+		if (addr > 7 && addr < 120)
+			state = STATE_SEND;
+		
+		if (addr > 120)
+		{
+			uart_puts_P("\r\nScan I2C-bus for devices:\r\n");	
+			addr = 0;
+		}
         // If slave address is between 8 and 119 then move to SEND state
 
         break;
@@ -56,13 +65,21 @@ ISR(TIMER1_OVF_vect)
         twi_stop();
         /* Test result from I2C bus. If it is 0 then move to ACK state, 
          * otherwise move to IDLE */
-
+		if (result == 0)
+			state = STATE_ACK;
+		else
+			state = STATE_IDLE;
+			
         break;
 
     // A module connected to the bus was found
     case STATE_ACK:
         // Send info about active I2C slave to UART and move to IDLE
-
+		itoa(addr, uart_string, 10);
+		uart_puts_P("Found device at address: ");
+		uart_puts(uart_string);
+		uart_puts_P("\r\n");
+		state = STATE_IDLE;
         break;
 
     // If something unexpected happens then move to IDLE
