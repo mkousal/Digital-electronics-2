@@ -23,6 +23,7 @@
 #include <stdlib.h>         // C library. Needed for conversion function
 #include "uart.h"           // Peter Fleury's UART library
 #include "twi.h"            // TWI library for AVR-GCC
+#include <util/delay.h>
 
 /* Variables ---------------------------------------------------------*/
 typedef enum {              // FSM declaration
@@ -55,11 +56,14 @@ int main(void)
     sei();
 
     // Put strings to ringbuffer for transmitting via UART
-    uart_puts("\r\nScan I2C-bus for devices:\r\n");
+    uart_puts("\r\nTemperature reader\r\n");
 
     // Infinite loop
     while (1)
     {
+		uart_puts("ss\r\n");
+		_delay_ms(200);
+		
         /* Empty loop. All subsequent operations are performed exclusively 
          * inside interrupt service routines ISRs */
     }
@@ -77,25 +81,25 @@ int main(void)
 ISR(TIMER1_OVF_vect)
 {
     static state_t state = STATE_IDLE;  // Current state of the FSM
-    static uint8_t addr = 7;            // I2C slave address
+    static uint8_t addr = 92;            // I2C slave address
     uint8_t result = 1;                 // ACK result from the bus
     char uart_string[2] = "00"; // String for converting numbers by itoa()
+	static uint8_t cnt = 0;
 
     // FSM
     switch (state)
     {
     // Increment I2C slave address
     case STATE_IDLE:
-        addr++;
-		if (addr > 7 && addr < 120)
-			state = STATE_SEND;
-		
-		if (addr > 120)
+		cnt++;
+		if (cnt == 50)
 		{
-			uart_puts_P("\r\nScan I2C-bus for devices:\r\n");	
-			addr = 0;
+			cnt = 0;
+			state = STATE_SEND;
+			uart_puts("->send");
 		}
-        // If slave address is between 8 and 119 then move to SEND state
+		else
+			state = STATE_IDLE;
 
         break;
     
@@ -109,23 +113,30 @@ ISR(TIMER1_OVF_vect)
         // |a6 a5 a4 a3 a2 a1 a0 R/W|   result   |
         // +------------------------+------------+
         result = twi_start((addr<<1) + TWI_WRITE);
-        twi_stop();
+//         twi_stop();
         /* Test result from I2C bus. If it is 0 then move to ACK state, 
          * otherwise move to IDLE */
 		if (result == 0)
+		{
 			state = STATE_ACK;
+			uart_puts("->ack");
+		}
 		else
+		{
 			state = STATE_IDLE;
-			
+			uart_puts("->idle");
+		}
         break;
 
     // A module connected to the bus was found
     case STATE_ACK:
         // Send info about active I2C slave to UART and move to IDLE
-		itoa(addr, uart_string, 10);
-		uart_puts_P("Found device at address: ");
+		uart_puts("twi");
+		twi_write(0);
+		uint8_t res1 = twi_read_nack();
+		twi_stop();
+		itoa(res1, uart_string, 10);
 		uart_puts(uart_string);
-		uart_puts_P("\r\n");
 		state = STATE_IDLE;
         break;
 
