@@ -2,7 +2,7 @@
 
 Link to this file in your GitHub repository:
 
-[https://github.com/your-github-account/repository-name/lab_name](https://github.com/...)
+[https://github.com/mkousal/Digital-electronics-2/blob/main/Labs/08-i2c/README.md](https://github.com/mkousal/Digital-electronics-2/blob/main/Labs/08-i2c/README.md)
 
 ### Arduino Uno pinout
 
@@ -14,7 +14,7 @@ Link to this file in your GitHub repository:
    * SPI pins
    * external interrupt pins INT0, INT1
 
-   ![your figure](Images/arduino_uno_pinout.png)
+   ![your figure](images/arduino_uno_pinout.png)
 
 ### I2C
 
@@ -92,7 +92,7 @@ ISR(TIMER1_OVF_vect)
 
 2. (Hand-drawn) picture of I2C signals when reading checksum (only 1 byte) from DHT12 sensor. Indicate which specific moments control the data line master and which slave.
 
-   ![your figure]()
+   ![your figure](images/wavedrom.svg)
 
 ### Meteo station
 

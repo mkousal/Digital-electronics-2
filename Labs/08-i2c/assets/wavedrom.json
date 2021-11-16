@@ -1,0 +1,21 @@
+{signal: [
+  {name: 'Data', 	wave: 'x34..............5.x.4...............5.x.34..............5.x.6...............5.8..', 
+   data: 'start addr[92]+WRITE ack write[4] ack start addr[92]+WRITE ack read_data nack stop',
+   					node: ''					
+  },
+  {name: 'SDA', wave: '101.0.1.....0................1.0.......1.01.0.1.....0........1.0.1.0.1.0.1.0.1.01.'},
+  {name: 'SCL', wave: '1.lhlhlhlhlhlhlhlhlhl.hlhlhlhlhlhlhlhlhlh.lhlhlhlhlhlhlhlhlhl.hlhlhlhlhlhlhlhlhlh.', phase: 0.1},
+  { name: 'Control',
+    wave: 'x9...............2.xx9...............2.x.9...............2.x.2...............9....',
+    data: 'master slave master slave master slave slave master'}
+],
+ edge: 
+  [
+	
+],
+  
+ head: {
+   tick: -1,
+   every: 1
+ }
+}
